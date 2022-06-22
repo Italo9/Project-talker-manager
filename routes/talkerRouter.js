@@ -47,4 +47,12 @@ router.put('/:id', authToken, authName, authAge, authTalk, authTalkAdditional, a
   return res.status(200).json(editTalker[editTalker.length - 1]);
 });
 
+router.delete('/:id', authToken, async (req, res) => {
+  const { id } = req.params;
+  const talkers = await readContentFile(PATH_FILE) || [];
+  const deleteTalker = talkers.filter((talker) => (talker.id !== Number(id)));
+  await writeContentFile(PATH_FILE, deleteTalker);
+  return res.status(204).send();
+});
+
 module.exports = router;
