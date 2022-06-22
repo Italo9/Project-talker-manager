@@ -8,4 +8,18 @@ const readContentFile = async (path) => {
       return null;
     }
   };
-module.exports = { readContentFile };
+
+  const writeContentFile = async (path, content) => {
+    try {
+      const arrContent = await readContentFile(path) || [];
+  
+      arrContent.push(content);
+      await fs.writeFile(path, JSON.stringify(arrContent));
+  
+      return content;
+    } catch (error) {
+      console.log(error.message);
+      return null;
+    }
+  };
+module.exports = { readContentFile, writeContentFile };
