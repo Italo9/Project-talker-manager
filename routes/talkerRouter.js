@@ -16,6 +16,20 @@ router.get('/', async (_req, res) => {
     res.status(200).json(talker);
   });
 
+  router.get('/search/', authToken, async (req, res) => {
+    const { q } = req.query;
+    const talkers = await readContentFile(PATH_FILE) || [];
+    console.log(talkers);
+    if (!q || q.length === 0) {
+      return res.status(200).json(talkers);
+    }
+    const searchTalker = talkers.filter((talker) => (talker.name.includes(q)));
+    if (!searchTalker) {
+      return res.status(200).send([]);
+    }
+    return res.status(200).json(searchTalker);
+  });
+
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const talker = await readContentFile(PATH_FILE) || [];
